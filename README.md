@@ -54,7 +54,94 @@ func main() {
 ```
 
 ## Benchmarks ##
-These are the benchmarks against `sync.Map`
+
+### Benchmark highlights ###
+
+#### Small Dataset (100 keys) ####
+- On reading, it is `60%` faster than `sync.Map`. `1.210` against `1.943`
+- On reading using tags, it is `466%` faster than `sync.Map`. `0.3430` against `1.943`
+- On writing, it is `5049%` faster than `sync.Map`. `8.838` against `455.1`
+- On writing using tags, it is `6262%` faster than `sync.Map`. `7.153` against `455.1`
+- On deleting, it is `99%` slower than `sync.Map`. `4.107` against `2.058`
+- On deleting using tags, it is `53%` slower than `sync.Map`. `3.159` against `2.058`
+- On mixed workload, it is `23%` faster than `sync.Map`. `7.310` against `9.042`
+- On mixed workload using tags, it is `51%` faster than `sync.Map`. `5.983` against `9.042`
+
+```shell
+Benchmark_TestSuite/Sync_Get_Existing_Parallel_100-20         	515149191	         1.943 ns/op
+Benchmark_TestSuite/Stags_GetByName_Existing_Parallel_100-20  	1000000000	         1.210 ns/op
+Benchmark_TestSuite/Stags_GetByTag_Existing_Parallel_100-20   	1000000000	         0.3865 ns/op
+Benchmark_TestSuite/Sync_Set_Existing_Parallel_100-20         	 3612550	       455.1 ns/op
+Benchmark_TestSuite/Stags_SetByName_Existing_Parallel_100-20  	148331192	         8.838 ns/op
+Benchmark_TestSuite/Stags_SetByTag_Existing_Parallel_100-20   	164656738	         7.153 ns/op
+Benchmark_TestSuite/Sync_Delete_Existing_Parallel_100-20      	576646665	         2.058 ns/op
+Benchmark_TestSuite/Stags_DeleteByName_Existing_Parallel_100-20         	291168806	         4.107 ns/op
+Benchmark_TestSuite/Stags_DeleteByTag_Existing_Parallel_100-20          	376814229	         3.159 ns/op
+Benchmark_TestSuite/Sync_Mixed_Existing_Parallel_100-20                 	137217655	         9.042 ns/op
+Benchmark_TestSuite/Stags_MixedByName_Existing_Parallel_100-20          	177474196	         7.310 ns/op
+Benchmark_TestSuite/Stags_MixedByTag_Existing_Parallel_100-20           	200294023	         5.983 ns/op
+```
+
+#### Big Dataset (10000 keys) ####
+- On reading, it is `30%` faster than `sync.Map`. `2.971` against `3.863`
+- On reading using tags, it is `9635%` faster than `sync.Map`. `0.3968` against `3.863`
+- On writing, it is `3499%` faster than `sync.Map`. `10.46` against `376.5`
+- On writing using tags, it is `5046%` faster than `sync.Map`. `7.460` against `376.5`
+- On deleting, it is `21%` faster than `sync.Map`. `3.324` against `4.023`
+- On deleting using tags, it is `371%` faster than `sync.Map`. `0.8529` against `4.023`
+- On mixed workload, it is `116%` faster than `sync.Map`. `6.305` against `13.63`
+- On mixed workload using tags, it is `287%` faster than `sync.Map`. `3.521` against `13.63`
+
+```shell
+Benchmark_TestSuite/Sync_Get_Existing_Parallel_10000-20                 	323890902	         3.863 ns/op
+Benchmark_TestSuite/Stags_GetByName_Existing_Parallel_10000-20          	336633704	         2.971 ns/op
+Benchmark_TestSuite/Stags_GetByTag_Existing_Parallel_10000-20           	1000000000	         0.3968 ns/op
+Benchmark_TestSuite/Sync_Set_Existing_Parallel_10000-20                 	 2795330	       376.5 ns/op
+Benchmark_TestSuite/Stags_SetByName_Existing_Parallel_10000-20          	121793810	        10.46 ns/op
+Benchmark_TestSuite/Stags_SetByTag_Existing_Parallel_10000-20           	166172490	         7.460 ns/op
+Benchmark_TestSuite/Sync_Delete_Existing_Parallel_10000-20              	299370060	         4.023 ns/op
+Benchmark_TestSuite/Stags_DeleteByName_Existing_Parallel_10000-20       	365563194	         3.324 ns/op
+Benchmark_TestSuite/Stags_DeleteByTag_Existing_Parallel_10000-20        	1000000000	         0.8529 ns/op
+Benchmark_TestSuite/Sync_Mixed_Existing_Parallel_10000-20               	85138987	        13.63 ns/op
+Benchmark_TestSuite/Stags_MixedByName_Existing_Parallel_10000-20        	191351470	         6.305 ns/op
+Benchmark_TestSuite/Stags_MixedByTag_Existing_Parallel_10000-20         	314240161	         3.521 ns/op
+```
+
+#### Huge Dataset (10000000 keys) ####
+- On reading, it is `5891%` faster than `sync.Map`. `6.487` against `388.7`
+- On reading using tags, it is `113422%` faster than `sync.Map`. `0.3781` against `388.7`
+- On writing, it is `4273%` faster than `sync.Map`. `12.21` against `534.0`
+- On writing using tags, it is `12201%` faster than `sync.Map`. `4.341` against `534.0`
+- On deleting, it is `6112%` faster than `sync.Map`. `8.455` against `525.3`
+- On deleting using tags, it is `79551%` faster than `sync.Map`. `0.6595` against `525.3`
+- On mixed workload, it is `4877%` faster than `sync.Map`. `10.32` against `513.7`
+- On mixed workload using tags, it is `24478%` faster than `sync.Map`. `2.090` against `513.7`
+
+```shell
+Benchmark_TestSuite/Sync_Get_Existing_Parallel_10000000-20                        	 3378445	       388.7 ns/op
+Benchmark_TestSuite/Stags_GetByName_Existing_Parallel_10000000-20                 	230943303	         6.487 ns/op
+Benchmark_TestSuite/Stags_GetByTag_Existing_Parallel_10000000-20                  	1000000000	         0.3424 ns/op
+Benchmark_TestSuite/Sync_Set_Existing_Parallel_10000000-20                        	 2419239	       534.0 ns/op
+Benchmark_TestSuite/Stags_SetByName_Existing_Parallel_10000000-20                 	100000000	        12.21 ns/op
+Benchmark_TestSuite/Stags_SetByTag_Existing_Parallel_10000000-20                  	284541192	         4.341 ns/op
+Benchmark_TestSuite/Sync_Delete_Existing_Parallel_10000000-20                     	 2621204	       525.3 ns/op
+Benchmark_TestSuite/Stags_DeleteByName_Existing_Parallel_10000000-20              	150548632	         8.455 ns/op
+Benchmark_TestSuite/Stags_DeleteByTag_Existing_Parallel_10000000-20               	1000000000	         0.6595 ns/op
+Benchmark_TestSuite/Sync_Mixed_Existing_Parallel_10000000-20                      	 2950747	       513.7 ns/op
+Benchmark_TestSuite/Stags_MixedByName_Existing_Parallel_10000000-20               	121410548	        10.32 ns/op
+Benchmark_TestSuite/Stags_MixedByTag_Existing_Parallel_10000000-20                	808862713	         2.090 ns/op
+```
+
+#### Benchmark insights ####
+On small dataset (100 keys), you can get - `9635%` speedup in reading and `5046%` speedup on writing.
+While mixed workload will give you only `51%` improvement due to the slower delete operations.
+
+On huge dataset (10000000 keys), you can get - wapping `113422%` speedup in reading and crazy `12201%` speedup on writing.
+And mixed workload will give you same level improvement of `24478%` over `sync.Map`.
+
+In almost all cases it is superior to `sync.Map` and of course to map+sync.RWMutex
+
+#### Raw benchmark data ####
 
 ```shell
 goos: linux
@@ -352,89 +439,3 @@ Benchmark_TestSuite/Stags_MixedByTag_NonExisting_Linear_10000000-20             
 PASS
 ok  	github.com/go-auxiliaries/tagmap/pkg/stags	1542.371s
 ```
-
-### Benchmark highlights ###
-
-#### Small Dataset (100 keys) ####
-- On reading, it is `60%` faster than `sync.Map`. `1.210` against `1.943`
-- On reading using tags, it is `466%` faster than `sync.Map`. `0.3430` against `1.943`
-- On writing, it is `5049%` faster than `sync.Map`. `8.838` against `455.1`
-- On writing using tags, it is `6262%` faster than `sync.Map`. `7.153` against `455.1`
-- On deleting, it is `99%` slower than `sync.Map`. `4.107` against `2.058`
-- On deleting using tags, it is `53%` slower than `sync.Map`. `3.159` against `2.058`
-- On mixed workload, it is `23%` faster than `sync.Map`. `7.310` against `9.042`
-- On mixed workload using tags, it is `51%` faster than `sync.Map`. `5.983` against `9.042`
-
-```shell
-Benchmark_TestSuite/Sync_Get_Existing_Parallel_100-20         	515149191	         1.943 ns/op
-Benchmark_TestSuite/Stags_GetByName_Existing_Parallel_100-20  	1000000000	         1.210 ns/op
-Benchmark_TestSuite/Stags_GetByTag_Existing_Parallel_100-20   	1000000000	         0.3865 ns/op
-Benchmark_TestSuite/Sync_Set_Existing_Parallel_100-20         	 3612550	       455.1 ns/op
-Benchmark_TestSuite/Stags_SetByName_Existing_Parallel_100-20  	148331192	         8.838 ns/op
-Benchmark_TestSuite/Stags_SetByTag_Existing_Parallel_100-20   	164656738	         7.153 ns/op
-Benchmark_TestSuite/Sync_Delete_Existing_Parallel_100-20      	576646665	         2.058 ns/op
-Benchmark_TestSuite/Stags_DeleteByName_Existing_Parallel_100-20         	291168806	         4.107 ns/op
-Benchmark_TestSuite/Stags_DeleteByTag_Existing_Parallel_100-20          	376814229	         3.159 ns/op
-Benchmark_TestSuite/Sync_Mixed_Existing_Parallel_100-20                 	137217655	         9.042 ns/op
-Benchmark_TestSuite/Stags_MixedByName_Existing_Parallel_100-20          	177474196	         7.310 ns/op
-Benchmark_TestSuite/Stags_MixedByTag_Existing_Parallel_100-20           	200294023	         5.983 ns/op
-```
-
-#### Big Dataset (10000 keys) ####
-- On reading, it is `30%` faster than `sync.Map`. `2.971` against `3.863`
-- On reading using tags, it is `9635%` faster than `sync.Map`. `0.3968` against `3.863`
-- On writing, it is `3499%` faster than `sync.Map`. `10.46` against `376.5`
-- On writing using tags, it is `5046%` faster than `sync.Map`. `7.460` against `376.5`
-- On deleting, it is `21%` faster than `sync.Map`. `3.324` against `4.023`
-- On deleting using tags, it is `371%` faster than `sync.Map`. `0.8529` against `4.023`
-- On mixed workload, it is `116%` faster than `sync.Map`. `6.305` against `13.63`
-- On mixed workload using tags, it is `287%` faster than `sync.Map`. `3.521` against `13.63`
-
-```shell
-Benchmark_TestSuite/Sync_Get_Existing_Parallel_10000-20                 	323890902	         3.863 ns/op
-Benchmark_TestSuite/Stags_GetByName_Existing_Parallel_10000-20          	336633704	         2.971 ns/op
-Benchmark_TestSuite/Stags_GetByTag_Existing_Parallel_10000-20           	1000000000	         0.3968 ns/op
-Benchmark_TestSuite/Sync_Set_Existing_Parallel_10000-20                 	 2795330	       376.5 ns/op
-Benchmark_TestSuite/Stags_SetByName_Existing_Parallel_10000-20          	121793810	        10.46 ns/op
-Benchmark_TestSuite/Stags_SetByTag_Existing_Parallel_10000-20           	166172490	         7.460 ns/op
-Benchmark_TestSuite/Sync_Delete_Existing_Parallel_10000-20              	299370060	         4.023 ns/op
-Benchmark_TestSuite/Stags_DeleteByName_Existing_Parallel_10000-20       	365563194	         3.324 ns/op
-Benchmark_TestSuite/Stags_DeleteByTag_Existing_Parallel_10000-20        	1000000000	         0.8529 ns/op
-Benchmark_TestSuite/Sync_Mixed_Existing_Parallel_10000-20               	85138987	        13.63 ns/op
-Benchmark_TestSuite/Stags_MixedByName_Existing_Parallel_10000-20        	191351470	         6.305 ns/op
-Benchmark_TestSuite/Stags_MixedByTag_Existing_Parallel_10000-20         	314240161	         3.521 ns/op
-```
-
-#### Huge Dataset (10000000 keys) ####
-- On reading, it is `5891%` faster than `sync.Map`. `6.487` against `388.7`
-- On reading using tags, it is `113422%` faster than `sync.Map`. `0.3781` against `388.7`
-- On writing, it is `4273%` faster than `sync.Map`. `12.21` against `534.0`
-- On writing using tags, it is `12201%` faster than `sync.Map`. `4.341` against `534.0`
-- On deleting, it is `6112%` faster than `sync.Map`. `8.455` against `525.3`
-- On deleting using tags, it is `79551%` faster than `sync.Map`. `0.6595` against `525.3`
-- On mixed workload, it is `4877%` faster than `sync.Map`. `10.32` against `513.7`
-- On mixed workload using tags, it is `24478%` faster than `sync.Map`. `2.090` against `513.7`
-
-```shell
-Benchmark_TestSuite/Sync_Get_Existing_Parallel_10000000-20                        	 3378445	       388.7 ns/op
-Benchmark_TestSuite/Stags_GetByName_Existing_Parallel_10000000-20                 	230943303	         6.487 ns/op
-Benchmark_TestSuite/Stags_GetByTag_Existing_Parallel_10000000-20                  	1000000000	         0.3424 ns/op
-Benchmark_TestSuite/Sync_Set_Existing_Parallel_10000000-20                        	 2419239	       534.0 ns/op
-Benchmark_TestSuite/Stags_SetByName_Existing_Parallel_10000000-20                 	100000000	        12.21 ns/op
-Benchmark_TestSuite/Stags_SetByTag_Existing_Parallel_10000000-20                  	284541192	         4.341 ns/op
-Benchmark_TestSuite/Sync_Delete_Existing_Parallel_10000000-20                     	 2621204	       525.3 ns/op
-Benchmark_TestSuite/Stags_DeleteByName_Existing_Parallel_10000000-20              	150548632	         8.455 ns/op
-Benchmark_TestSuite/Stags_DeleteByTag_Existing_Parallel_10000000-20               	1000000000	         0.6595 ns/op
-Benchmark_TestSuite/Sync_Mixed_Existing_Parallel_10000000-20                      	 2950747	       513.7 ns/op
-Benchmark_TestSuite/Stags_MixedByName_Existing_Parallel_10000000-20               	121410548	        10.32 ns/op
-Benchmark_TestSuite/Stags_MixedByTag_Existing_Parallel_10000000-20                	808862713	         2.090 ns/op
-```
-
-#### Benchmark insights ####
-On small dataset (100 keys), you can get - `9635%` speedup in reading and `5046%` speedup on writing.
-While mixed workload will give you only `51%` improvement due to the slower delete operations.
-
-On huge dataset (10000000 keys), you can get - wapping `113422%` speedup in reading and crazy `12201%` speedup on writing.
-And mixed workload will give you same level improvement of `24478%` over `sync.Map`.
-
-In almost all cases it is superior to `sync.Map` and of course to map+sync.RWMutex
