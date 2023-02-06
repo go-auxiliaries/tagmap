@@ -106,3 +106,19 @@ func (m *TagMap[V]) ValuesByName() map[tagmap.TagName]V {
 	}
 	return out
 }
+
+func (m *TagMap[V]) GetValuesByName(names ...tagmap.TagName) tagmap.List[V] {
+	out := make(tagmap.List[V], len(names))
+	for idx, name := range names {
+		out[idx] = m.GetByName(name)
+	}
+	return out
+}
+
+func (m *TagMap[V]) GetValuesByTag(tags ...tagmap.Tag) tagmap.List[V] {
+	out := make(tagmap.List[V], len(tags))
+	for idx, tag := range tags {
+		out[idx] = m.GetByTag(tag)
+	}
+	return out
+}
